@@ -77,6 +77,12 @@ const CloseButton = styled.button`
 const ModalBasis = styled(motion.div)`
   margin: 0.5rem;
   width: 50vw;
+
+  /*MOBILE ONLY CODE*/
+  @media screen and (max-width: 700px) {
+    width: 75vw;
+  }
+
   display: flex;
   flex-direction: column;
   align-items: center;

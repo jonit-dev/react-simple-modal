@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { ChevronRight } from "react-feather";
 import styled from "styled-components";
 
 import { questionWizardTheme } from "../../constants/questionWizard.constants";
-import { Button } from "../Button";
+import { NextButton } from "./buttons/NextButton";
+import { PreviousButton } from "./buttons/PreviousButton";
 import { QuestionOptionCard } from "./QuestionOptionCard";
 import { IQuestion } from "./questionWizard.types";
 
@@ -12,12 +12,17 @@ interface IProps {
 }
 
 export const QuestionWizard: React.FC<IProps> = ({ questions }) => {
-  const [questionsIndex] = useState<number>(0);
+  const [questionsIndex, setQuestionsIndex] = useState<number>(0);
   const [totalQuestions] = useState<number>(questions.length);
 
   const [currentQuestion, setCurrentQuestion] = useState(
     questions[questionsIndex]
   );
+
+  useEffect(() => {
+    setCurrentQuestion(questions[questionsIndex]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [questionsIndex]);
 
   const onToggleOptionSelected = (targetIndex: number) => {
     const updatedOptions = currentQuestion.options.map((option, i) => {
@@ -49,19 +54,33 @@ export const QuestionWizard: React.FC<IProps> = ({ questions }) => {
       />
     ));
 
+  const isPreviousDisabled = questionsIndex === 0;
+  const isNextDisabled = questionsIndex === totalQuestions - 1;
+
+  const onNextClick = () => {
+    !isNextDisabled && setQuestionsIndex((prev) => prev + 1);
+  };
+
+  const onPreviousClick = () => {
+    !isPreviousDisabled && setQuestionsIndex((prev) => prev - 1);
+  };
+
   return (
     <Container>
       <Header>
         <QuestionLabel>
-          Question {questionsIndex}/{totalQuestions}
+          Question {questionsIndex + 1}/{totalQuestions}
         </QuestionLabel>
         <QuestionTitle>{currentQuestion.title}</QuestionTitle>
       </Header>
       <Body>{onRenderOptions()}</Body>
       <Footer>
-        <Button>
-          Next <ChevronRight />
-        </Button>
+        <PreviousButton
+          onClick={onPreviousClick}
+          isDisabled={isPreviousDisabled}
+        />
+
+        <NextButton onClick={onNextClick} isDisabled={isNextDisabled} />
       </Footer>
     </Container>
   );
@@ -69,6 +88,7 @@ export const QuestionWizard: React.FC<IProps> = ({ questions }) => {
 
 const Container = styled.div`
   font-family: "Open Sans", sans-serif;
+  min-width: 70%;
 `;
 
 const Header = styled.div`
@@ -86,8 +106,9 @@ const Body = styled.div`
 
 const Footer = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-top: 1.5rem;
+  width: 100%;
 `;
 
 const QuestionLabel = styled.div`

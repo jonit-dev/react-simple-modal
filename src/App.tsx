@@ -26,6 +26,16 @@ function App() {
         },
       ],
     },
+    {
+      title: "What's the meaning of life?",
+      options: [
+        {
+          imageUrl: "/images/online-learning.png",
+          label: "Eat & Code",
+          isSelected: false,
+        },
+      ],
+    },
   ];
 
   return (
