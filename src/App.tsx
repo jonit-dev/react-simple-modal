@@ -1,9 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import { Fade } from "./animations/Fade";
+import { Button } from "./components/Button";
+import { Modal } from "./components/Modal";
+import { QuestionWizard } from "./components/Wizard/QuestionWizard";
+import { IQuestion } from "./components/Wizard/questionWizard.types";
 
 function App() {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const questionWizardQuestions: IQuestion[] = [
+    {
+      title: "What's your goal?",
+      options: [
+        {
+          imageUrl: "/images/online-learning.png",
+          label: "Learn the Basics",
+          isSelected: false,
+        },
+        {
+          imageUrl: "/images/portfolio.png",
+          label: "Track my Portfolio",
+          isSelected: false,
+        },
+      ],
+    },
+  ];
+
   return (
     <>
       <h1>Framer Motion</h1>
@@ -12,6 +36,12 @@ function App() {
       <Fade direction="in" slideEntrance>
         <Box />
       </Fade>
+
+      <h2>Modal</h2>
+      <Button onClick={() => setIsModalOpen(true)}>Open modal</Button>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(!isModalOpen)}>
+        <QuestionWizard questions={questionWizardQuestions} />
+      </Modal>
     </>
   );
 }
