@@ -1,42 +1,14 @@
 import React from "react";
-import { ChevronLeft, Icon } from "react-feather";
-import styled from "styled-components";
 
-import { Button } from "../../Button";
+import { QuestionButton } from "./QuestionButton";
 
 interface IProps {
   onClick: () => void;
-  isDisabled?: boolean;
-  children?: React.ReactNode;
-  defaultLabel?: string;
-  defaultIcon?: Icon;
+  isDisabled: boolean;
 }
 
-export const PreviousButton: React.FC<IProps> = ({
-  onClick,
-  isDisabled = false,
-  children,
-  defaultLabel = "Previous",
-  defaultIcon = <ChevronLeft size={20} />,
-}) => {
+export const PreviousButton: React.FC<IProps> = ({ onClick, isDisabled }) => {
   return (
-    <Container onClick={onClick} className={isDisabled ? "disabled" : ""}>
-      {children ? (
-        children
-      ) : (
-        <Button>
-          {defaultIcon} {defaultLabel}
-        </Button>
-      )}
-    </Container>
+    <QuestionButton type="previous" onClick={onClick} isDisabled={isDisabled} />
   );
 };
-
-const Container = styled.div`
-  margin-right: 0.5rem;
-
-  &.disabled {
-    filter: grayscale(100%);
-    opacity: 0.4;
-  }
-`;
