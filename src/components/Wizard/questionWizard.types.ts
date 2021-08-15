@@ -24,4 +24,9 @@ export interface IWizardTheme {
   darkGray: string;
   gray: string;
   mediumGray: string;
+  titleColor: string;
+}
+
+export interface IWizardOptions {
+  questionLabel: string;
 }

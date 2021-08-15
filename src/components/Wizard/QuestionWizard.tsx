@@ -1,14 +1,13 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import styled from "styled-components/macro";
+import styled, { ThemeProvider } from "styled-components";
 
 import { defaultWizardThemeProps } from "../../constants/questionWizard.constants";
 import { FinishButton } from "./buttons/FinishButton";
 import { NextButton } from "./buttons/NextButton";
 import { PreviousButton } from "./buttons/PreviousButton";
 import { QuestionOptionCard } from "./QuestionOptionCard";
-import { IQuestion, IWizardTheme } from "./questionWizard.types";
-import { WizardThemeContext } from "./store/WizardThemeContext";
+import { IQuestion, IWizardOptions, IWizardTheme } from "./questionWizard.types";
 
 interface IProps {
   questions: IQuestion[];
@@ -16,6 +15,7 @@ interface IProps {
   onFinish?: (questions: IQuestion[]) => void;
   className?: string;
   themeProps?: IWizardTheme;
+  options?: IWizardOptions;
 }
 
 export const QuestionWizard: React.FC<IProps> = ({
@@ -24,6 +24,7 @@ export const QuestionWizard: React.FC<IProps> = ({
   onFinish,
   className,
   themeProps,
+  options,
 }) => {
   const [questionsIndex, setQuestionsIndex] = useState<number>(0);
   const [totalQuestions] = useState<number>(questions.length);
@@ -108,11 +109,7 @@ export const QuestionWizard: React.FC<IProps> = ({
   };
 
   return (
-    <WizardThemeContext.Provider
-      value={{
-        theme: themeProps ? themeProps : defaultWizardThemeProps,
-      }}
-    >
+    <ThemeProvider theme={themeProps ? themeProps : defaultWizardThemeProps}>
       <AnimatePresence>
         <Wrapper className={className}>
           <Container
@@ -126,7 +123,8 @@ export const QuestionWizard: React.FC<IProps> = ({
           >
             <Header>
               <QuestionLabel>
-                Question {questionsIndex + 1}/{totalQuestions}
+                {options?.questionLabel ? options.questionLabel : "Question"}{" "}
+                {questionsIndex + 1}/{totalQuestions}
               </QuestionLabel>
               <QuestionTitle>{currentQuestion.title}</QuestionTitle>
             </Header>
@@ -153,7 +151,7 @@ export const QuestionWizard: React.FC<IProps> = ({
           </Container>
         </Wrapper>
       </AnimatePresence>
-    </WizardThemeContext.Provider>
+    </ThemeProvider>
   );
 };
 
@@ -204,5 +202,5 @@ const QuestionTitle = styled.div`
   font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
-  color: ${defaultWizardThemeProps.darkGray};
+  color: ${({ theme }) => theme.titleColor};
 `;

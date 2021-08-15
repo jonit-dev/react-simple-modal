@@ -5,4 +5,5 @@ export const defaultWizardThemeProps = {
   darkGray: "#3f4048",
   gray: "#777a97",
   mediumGray: "#c4c5ce",
+  titleColor: "#3f4048",
 };

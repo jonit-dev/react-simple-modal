@@ -4,7 +4,6 @@ import { CheckCircle } from "react-feather";
 import styled from "styled-components";
 
 import { defaultWizardThemeProps } from "../../constants/questionWizard.constants";
-import { IWizardThemeContext, WizardThemeContext } from "./store/WizardThemeContext";
 
 interface IProps {
   imageUrl: string;
@@ -21,17 +20,14 @@ export const QuestionOptionCard: React.FC<IProps> = ({
   onClick,
   selectedColor,
 }) => {
-  const { theme } = useContext<IWizardThemeContext>(WizardThemeContext);
-
   return (
     <IconBox
       className={!isSelected ? "inactive" : ""}
       onClick={onClick}
       animate={isSelected ? { scale: 1.05 } : { scale: 1 }}
       transition={{ duration: 0.5 }}
-      theme={theme}
     >
-      {isSelected && <CustomCheckCircle theme={theme} />}
+      {isSelected && <CustomCheckCircle />}
       <ImageContainer>
         <img src={imageUrl} alt="question option icon" />
       </ImageContainer>
@@ -82,7 +78,7 @@ const ImageContainer = styled.div`
 
 const IconBoxLabel = styled.span`
   font-size: 0.8rem;
-  color: ${defaultWizardThemeProps.gray};
+  color: ${({ theme }) => (theme ? theme.gray : defaultWizardThemeProps.gray)};
   font-weight: bold;
   display: flex;
   justify-content: center;
