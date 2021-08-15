@@ -38,8 +38,6 @@ export const QuestionWizard: React.FC<IProps> = ({
     questionsIndex === totalQuestions - 2
   );
 
-  const [isTransitionTriggered, setIsTransitionTriggered] = useState(false);
-
   useEffect(() => {
     onChange && onChange(questions);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -89,14 +87,12 @@ export const QuestionWizard: React.FC<IProps> = ({
   const onNextClick = () => {
     if (!isCurrentStepDisabled && !isLastStep) {
       setQuestionsIndex((prev) => prev + 1);
-      setIsTransitionTriggered(true);
     }
   };
 
   const onPreviousClick = () => {
-    if (!isCurrentStepDisabled && !isPreviousDisabled) {
+    if (!isPreviousDisabled) {
       setQuestionsIndex((prev) => prev - 1);
-      setIsTransitionTriggered(true);
     }
   };
 
@@ -109,8 +105,15 @@ export const QuestionWizard: React.FC<IProps> = ({
   return (
     <AnimatePresence>
       <Wrapper>
-        {JSON.stringify(isTransitionTriggered)}
-        <Container transition={{ type: "spring", stiffness: 100 }}>
+        <Container
+          key={`${questionsIndex}`}
+          initial={{ x: window.innerWidth * 0.15, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{
+            type: "spring",
+            stiffness: 100,
+          }}
+        >
           <Header>
             <QuestionLabel>
               Question {questionsIndex + 1}/{totalQuestions}
@@ -145,6 +148,12 @@ export const QuestionWizard: React.FC<IProps> = ({
 
 const Wrapper = styled.div`
   overflow: hidden;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
 `;
 
 const Container = styled(motion.div)`

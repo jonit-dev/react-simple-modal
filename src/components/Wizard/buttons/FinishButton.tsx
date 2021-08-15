@@ -1,5 +1,5 @@
 import React from "react";
-import { Feather } from "react-feather";
+import { Feather, Icon } from "react-feather";
 import styled from "styled-components";
 
 import { Button } from "../../Button";
@@ -8,12 +8,16 @@ interface IProps {
   onClick: () => void;
   isDisabled?: boolean;
   children?: React.ReactNode;
+  defaultLabel?: string;
+  defaultIcon?: Icon;
 }
 
 export const FinishButton: React.FC<IProps> = ({
   onClick,
   isDisabled = false,
   children,
+  defaultLabel = "Finish",
+  defaultIcon = <Feather size={20} />,
 }) => {
   return (
     <Container onClick={onClick} className={isDisabled ? "disabled" : ""}>
@@ -21,7 +25,7 @@ export const FinishButton: React.FC<IProps> = ({
         children
       ) : (
         <Button>
-          Finish <Feather />
+          {defaultLabel} {defaultIcon}
         </Button>
       )}
     </Container>
