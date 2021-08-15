@@ -10,6 +10,7 @@ interface IProps {
   label: string;
   isSelected: boolean;
   onClick: () => void;
+  selectedColor?: string;
 }
 
 export const QuestionOptionCard: React.FC<IProps> = ({
@@ -17,6 +18,7 @@ export const QuestionOptionCard: React.FC<IProps> = ({
   label,
   isSelected,
   onClick,
+  selectedColor,
 }) => {
   return (
     <IconBox
@@ -24,8 +26,9 @@ export const QuestionOptionCard: React.FC<IProps> = ({
       onClick={onClick}
       animate={isSelected ? { scale: 1.05 } : { scale: 1 }}
       transition={{ duration: 0.5 }}
+      $selectedColor={selectedColor}
     >
-      {isSelected && <CustomCheckCircle />}
+      {isSelected && <CustomCheckCircle $selectedColor={selectedColor} />}
       <ImageContainer>
         <img src={imageUrl} alt="question option icon" />
       </ImageContainer>
@@ -34,12 +37,18 @@ export const QuestionOptionCard: React.FC<IProps> = ({
   );
 };
 
-const IconBox = styled(motion.div)`
+interface IIconBox {
+  $selectedColor?: string;
+}
+
+const IconBox = styled(motion.div)<IIconBox>`
   display: flex;
   flex-wrap: wrap;
   flex-direction: row-reverse;
 
-  border: 1px solid ${questionWizardTheme.blue};
+  border: 1px solid
+    ${({ $selectedColor }) =>
+      $selectedColor ? $selectedColor : questionWizardTheme.blue};
   width: 100%;
 
   /*DESKTOP ONLY CODE*/
@@ -88,7 +97,11 @@ const IconBoxLabel = styled.span`
   }
 `;
 
-const CustomCheckCircle = styled(CheckCircle)`
+interface ICustomCheckCircle {
+  $selectedColor?: string;
+}
+
+const CustomCheckCircle = styled(CheckCircle)<ICustomCheckCircle>`
   position: absolute;
 
   top: 0.4rem;
@@ -100,5 +113,6 @@ const CustomCheckCircle = styled(CheckCircle)`
     right: 0.7rem;
   }
 
-  color: ${questionWizardTheme.blue};
+  color: ${({ $selectedColor }) =>
+    $selectedColor ? $selectedColor : questionWizardTheme.blue};
 `;

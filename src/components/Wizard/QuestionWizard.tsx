@@ -13,12 +13,14 @@ interface IProps {
   questions: IQuestion[];
   onChange?: (questions: IQuestion[]) => void;
   onFinish?: (questions: IQuestion[]) => void;
+  className?: string;
 }
 
 export const QuestionWizard: React.FC<IProps> = ({
   questions,
   onChange,
   onFinish,
+  className,
 }) => {
   const [questionsIndex, setQuestionsIndex] = useState<number>(0);
   const [totalQuestions] = useState<number>(questions.length);
@@ -104,7 +106,7 @@ export const QuestionWizard: React.FC<IProps> = ({
 
   return (
     <AnimatePresence>
-      <Wrapper>
+      <Wrapper className={className}>
         <Container
           key={`${questionsIndex}`}
           initial={{ x: window.innerWidth * 0.15, opacity: 0 }}

@@ -44,7 +44,7 @@ function App() {
   ];
 
   return (
-    <>
+    <Container>
       <h1>Framer Motion</h1>
 
       <h2>Fade with slide</h2>
@@ -61,7 +61,7 @@ function App() {
           onFinish={() => setIsModalOpen(false)}
         />
       </Modal>
-    </>
+    </Container>
   );
 }
 
@@ -73,5 +73,7 @@ const Box = styled.div`
   width: 100px;
   height: 100px;
 `;
+
+const Container = styled.div``;
 
 export default App;

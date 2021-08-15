@@ -14,4 +14,5 @@ export interface IQuestionButton {
   isDisabled?: boolean;
   type: "next" | "previous" | "finish";
   children?: React.ReactNode;
+  color?: string;
 }

@@ -28,10 +28,15 @@ export const QuestionButton: React.FC<IQuestionButton> = ({
   isDisabled = false,
   children,
   type,
+  color,
 }) => {
   return (
     <Container onClick={onClick} className={isDisabled ? "disabled" : ""}>
-      {children ? children : <Button>{defaultButtons[type]()}</Button>}
+      {children ? (
+        children
+      ) : (
+        <Button color={color}>{defaultButtons[type]()}</Button>
+      )}
     </Container>
   );
 };
