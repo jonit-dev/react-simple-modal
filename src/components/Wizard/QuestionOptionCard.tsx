@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import React from "react";
 import { CheckCircle } from "react-feather";
 import styled from "styled-components";
@@ -18,7 +19,12 @@ export const QuestionOptionCard: React.FC<IProps> = ({
   onClick,
 }) => {
   return (
-    <IconBox className={!isSelected ? "inactive" : ""} onClick={onClick}>
+    <IconBox
+      className={!isSelected ? "inactive" : ""}
+      onClick={onClick}
+      animate={isSelected ? { scale: 1.05 } : { scale: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       {isSelected && <CustomCheckCircle />}
       <ImageContainer>
         <img src={imageUrl} alt="question option icon" />
@@ -28,7 +34,7 @@ export const QuestionOptionCard: React.FC<IProps> = ({
   );
 };
 
-const IconBox = styled.div`
+const IconBox = styled(motion.div)`
   display: flex;
   flex-wrap: wrap;
   flex-direction: row-reverse;

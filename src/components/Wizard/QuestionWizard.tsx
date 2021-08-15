@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components/macro";
 
@@ -37,11 +38,15 @@ export const QuestionWizard: React.FC<IProps> = ({
     questionsIndex === totalQuestions - 2
   );
 
+  const [isTransitionTriggered, setIsTransitionTriggered] = useState(false);
+
+  useEffect(() => {
+    onChange && onChange(questions);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [questionsIndex]);
+
   useEffect(() => {
     setCurrentQuestion(questions[questionsIndex]);
-
-    onChange && onChange(questions);
-
     setIsPreviousDisabled(questionsIndex === 0);
     setIsLastStep(questionsIndex === totalQuestions - 1);
     setCurrentStepDisabled(
@@ -82,14 +87,16 @@ export const QuestionWizard: React.FC<IProps> = ({
     ));
 
   const onNextClick = () => {
-    if (!isCurrentStepDisabled) {
-      !isLastStep && setQuestionsIndex((prev) => prev + 1);
+    if (!isCurrentStepDisabled && !isLastStep) {
+      setQuestionsIndex((prev) => prev + 1);
+      setIsTransitionTriggered(true);
     }
   };
 
   const onPreviousClick = () => {
-    if (!isCurrentStepDisabled) {
-      !isPreviousDisabled && setQuestionsIndex((prev) => prev - 1);
+    if (!isCurrentStepDisabled && !isPreviousDisabled) {
+      setQuestionsIndex((prev) => prev - 1);
+      setIsTransitionTriggered(true);
     }
   };
 
@@ -100,38 +107,47 @@ export const QuestionWizard: React.FC<IProps> = ({
   };
 
   return (
-    <Container>
-      <Header>
-        <QuestionLabel>
-          Question {questionsIndex + 1}/{totalQuestions}
-        </QuestionLabel>
-        <QuestionTitle>{currentQuestion.title}</QuestionTitle>
-      </Header>
-      <Body>{onRenderOptions()}</Body>
-      <Footer>
-        <PreviousButton
-          onClick={onPreviousClick}
-          isDisabled={isPreviousDisabled}
-        />
+    <AnimatePresence>
+      <Wrapper>
+        {JSON.stringify(isTransitionTriggered)}
+        <Container transition={{ type: "spring", stiffness: 100 }}>
+          <Header>
+            <QuestionLabel>
+              Question {questionsIndex + 1}/{totalQuestions}
+            </QuestionLabel>
+            <QuestionTitle>{currentQuestion.title}</QuestionTitle>
+          </Header>
+          <Body>{onRenderOptions()}</Body>
+          <Footer>
+            <PreviousButton
+              onClick={onPreviousClick}
+              isDisabled={isPreviousDisabled}
+            />
 
-        {isOneStepBeforeFinishing && (
-          <NextButton
-            onClick={onNextClick}
-            isDisabled={isCurrentStepDisabled}
-          />
-        )}
-        {isLastStep && (
-          <FinishButton
-            onClick={onFinishClick}
-            isDisabled={isCurrentStepDisabled}
-          />
-        )}
-      </Footer>
-    </Container>
+            {isOneStepBeforeFinishing && (
+              <NextButton
+                onClick={onNextClick}
+                isDisabled={isCurrentStepDisabled}
+              />
+            )}
+            {isLastStep && (
+              <FinishButton
+                onClick={onFinishClick}
+                isDisabled={isCurrentStepDisabled}
+              />
+            )}
+          </Footer>
+        </Container>
+      </Wrapper>
+    </AnimatePresence>
   );
 };
 
-const Container = styled.div`
+const Wrapper = styled.div`
+  overflow: hidden;
+`;
+
+const Container = styled(motion.div)`
   font-family: "Open Sans", sans-serif;
   width: 100%;
   max-width: 600px;
