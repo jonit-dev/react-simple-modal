@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useContext } from "react";
 import { CheckCircle } from "react-feather";
 import styled from "styled-components";
 
-import { questionWizardTheme } from "../../constants/questionWizard.constants";
+import { defaultWizardThemeProps } from "../../constants/questionWizard.constants";
+import { IWizardThemeContext, WizardThemeContext } from "./store/WizardThemeContext";
 
 interface IProps {
   imageUrl: string;
@@ -20,15 +21,17 @@ export const QuestionOptionCard: React.FC<IProps> = ({
   onClick,
   selectedColor,
 }) => {
+  const { theme } = useContext<IWizardThemeContext>(WizardThemeContext);
+
   return (
     <IconBox
       className={!isSelected ? "inactive" : ""}
       onClick={onClick}
       animate={isSelected ? { scale: 1.05 } : { scale: 1 }}
       transition={{ duration: 0.5 }}
-      $selectedColor={selectedColor}
+      theme={theme}
     >
-      {isSelected && <CustomCheckCircle $selectedColor={selectedColor} />}
+      {isSelected && <CustomCheckCircle theme={theme} />}
       <ImageContainer>
         <img src={imageUrl} alt="question option icon" />
       </ImageContainer>
@@ -37,18 +40,13 @@ export const QuestionOptionCard: React.FC<IProps> = ({
   );
 };
 
-interface IIconBox {
-  $selectedColor?: string;
-}
-
-const IconBox = styled(motion.div)<IIconBox>`
+const IconBox = styled(motion.div)`
   display: flex;
   flex-wrap: wrap;
   flex-direction: row-reverse;
 
   border: 1px solid
-    ${({ $selectedColor }) =>
-      $selectedColor ? $selectedColor : questionWizardTheme.blue};
+    ${({ theme }) => (theme ? theme.primary : defaultWizardThemeProps.primary)};
   width: 100%;
 
   /*DESKTOP ONLY CODE*/
@@ -84,7 +82,7 @@ const ImageContainer = styled.div`
 
 const IconBoxLabel = styled.span`
   font-size: 0.8rem;
-  color: ${questionWizardTheme.gray};
+  color: ${defaultWizardThemeProps.gray};
   font-weight: bold;
   display: flex;
   justify-content: center;
@@ -97,11 +95,7 @@ const IconBoxLabel = styled.span`
   }
 `;
 
-interface ICustomCheckCircle {
-  $selectedColor?: string;
-}
-
-const CustomCheckCircle = styled(CheckCircle)<ICustomCheckCircle>`
+const CustomCheckCircle = styled(CheckCircle)`
   position: absolute;
 
   top: 0.4rem;
@@ -113,6 +107,6 @@ const CustomCheckCircle = styled(CheckCircle)<ICustomCheckCircle>`
     right: 0.7rem;
   }
 
-  color: ${({ $selectedColor }) =>
-    $selectedColor ? $selectedColor : questionWizardTheme.blue};
+  color: ${({ theme }) =>
+    theme ? theme.primary : defaultWizardThemeProps.primary};
 `;

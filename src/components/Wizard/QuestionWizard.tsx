@@ -2,18 +2,20 @@ import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components/macro";
 
-import { questionWizardTheme } from "../../constants/questionWizard.constants";
+import { defaultWizardThemeProps } from "../../constants/questionWizard.constants";
 import { FinishButton } from "./buttons/FinishButton";
 import { NextButton } from "./buttons/NextButton";
 import { PreviousButton } from "./buttons/PreviousButton";
 import { QuestionOptionCard } from "./QuestionOptionCard";
-import { IQuestion } from "./questionWizard.types";
+import { IQuestion, IWizardTheme } from "./questionWizard.types";
+import { WizardThemeContext } from "./store/WizardThemeContext";
 
 interface IProps {
   questions: IQuestion[];
   onChange?: (questions: IQuestion[]) => void;
   onFinish?: (questions: IQuestion[]) => void;
   className?: string;
+  themeProps?: IWizardTheme;
 }
 
 export const QuestionWizard: React.FC<IProps> = ({
@@ -21,6 +23,7 @@ export const QuestionWizard: React.FC<IProps> = ({
   onChange,
   onFinish,
   className,
+  themeProps,
 }) => {
   const [questionsIndex, setQuestionsIndex] = useState<number>(0);
   const [totalQuestions] = useState<number>(questions.length);
@@ -105,46 +108,52 @@ export const QuestionWizard: React.FC<IProps> = ({
   };
 
   return (
-    <AnimatePresence>
-      <Wrapper className={className}>
-        <Container
-          key={`${questionsIndex}`}
-          initial={{ x: window.innerWidth * 0.15, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{
-            type: "spring",
-            stiffness: 100,
-          }}
-        >
-          <Header>
-            <QuestionLabel>
-              Question {questionsIndex + 1}/{totalQuestions}
-            </QuestionLabel>
-            <QuestionTitle>{currentQuestion.title}</QuestionTitle>
-          </Header>
-          <Body>{onRenderOptions()}</Body>
-          <Footer>
-            <PreviousButton
-              onClick={onPreviousClick}
-              isDisabled={isPreviousDisabled}
-            />
+    <WizardThemeContext.Provider
+      value={{
+        theme: themeProps ? themeProps : defaultWizardThemeProps,
+      }}
+    >
+      <AnimatePresence>
+        <Wrapper className={className}>
+          <Container
+            key={`${questionsIndex}`}
+            initial={{ x: window.innerWidth * 0.15, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{
+              type: "spring",
+              stiffness: 100,
+            }}
+          >
+            <Header>
+              <QuestionLabel>
+                Question {questionsIndex + 1}/{totalQuestions}
+              </QuestionLabel>
+              <QuestionTitle>{currentQuestion.title}</QuestionTitle>
+            </Header>
+            <Body>{onRenderOptions()}</Body>
+            <Footer>
+              <PreviousButton
+                onClick={onPreviousClick}
+                isDisabled={isPreviousDisabled}
+              />
 
-            {isOneStepBeforeFinishing && (
-              <NextButton
-                onClick={onNextClick}
-                isDisabled={isCurrentStepDisabled}
-              />
-            )}
-            {isLastStep && (
-              <FinishButton
-                onClick={onFinishClick}
-                isDisabled={isCurrentStepDisabled}
-              />
-            )}
-          </Footer>
-        </Container>
-      </Wrapper>
-    </AnimatePresence>
+              {isOneStepBeforeFinishing && (
+                <NextButton
+                  onClick={onNextClick}
+                  isDisabled={isCurrentStepDisabled}
+                />
+              )}
+              {isLastStep && (
+                <FinishButton
+                  onClick={onFinishClick}
+                  isDisabled={isCurrentStepDisabled}
+                />
+              )}
+            </Footer>
+          </Container>
+        </Wrapper>
+      </AnimatePresence>
+    </WizardThemeContext.Provider>
   );
 };
 
@@ -188,12 +197,12 @@ const QuestionLabel = styled.div`
   font-size: 0.8rem;
   font-weight: bold;
   text-align: center;
-  color: ${questionWizardTheme.mediumGray};
+  color: ${defaultWizardThemeProps.mediumGray};
 `;
 
 const QuestionTitle = styled.div`
   font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
-  color: ${questionWizardTheme.darkGray};
+  color: ${defaultWizardThemeProps.darkGray};
 `;

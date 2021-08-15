@@ -16,3 +16,12 @@ export interface IQuestionButton {
   children?: React.ReactNode;
   color?: string;
 }
+
+export interface IWizardTheme {
+  primary: string;
+  secondary: string;
+  lightGray: string;
+  darkGray: string;
+  gray: string;
+  mediumGray: string;
+}

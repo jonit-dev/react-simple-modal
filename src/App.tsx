@@ -6,6 +6,7 @@ import { Button } from "./components/Button";
 import { Modal } from "./components/Modal";
 import { QuestionWizard } from "./components/Wizard/QuestionWizard";
 import { IQuestion } from "./components/Wizard/questionWizard.types";
+import { defaultWizardThemeProps } from "./constants/questionWizard.constants";
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -59,6 +60,10 @@ function App() {
           questions={questionWizardQuestions}
           onChange={(questions) => console.log(questions)}
           onFinish={() => setIsModalOpen(false)}
+          themeProps={{
+            ...defaultWizardThemeProps,
+            primary: "green",
+          }}
         />
       </Modal>
     </Container>
