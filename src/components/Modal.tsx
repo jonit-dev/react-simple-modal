@@ -94,11 +94,6 @@ const ModalBasis = styled(motion.div)`
   border: 1px solid #d8d8d8;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
-  img {
-    min-width: 82px;
-    height: 82px;
-    margin-bottom: 15px;
-  }
   p {
     margin-bottom: 40px;
     font-size: 18px;

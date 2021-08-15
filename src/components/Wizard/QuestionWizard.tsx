@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 import { questionWizardTheme } from "../../constants/questionWizard.constants";
+import { FinishButton } from "./buttons/FinishButton";
 import { NextButton } from "./buttons/NextButton";
 import { PreviousButton } from "./buttons/PreviousButton";
 import { QuestionOptionCard } from "./QuestionOptionCard";
@@ -9,20 +10,46 @@ import { IQuestion } from "./questionWizard.types";
 
 interface IProps {
   questions: IQuestion[];
+  onChange?: (questions: IQuestion[]) => void;
+  onFinish?: (questions: IQuestion[]) => void;
 }
 
-export const QuestionWizard: React.FC<IProps> = ({ questions }) => {
+export const QuestionWizard: React.FC<IProps> = ({
+  questions,
+  onChange,
+  onFinish,
+}) => {
   const [questionsIndex, setQuestionsIndex] = useState<number>(0);
   const [totalQuestions] = useState<number>(questions.length);
-
   const [currentQuestion, setCurrentQuestion] = useState(
     questions[questionsIndex]
+  );
+  const [isPreviousDisabled, setIsPreviousDisabled] = useState(
+    questionsIndex === 0
+  );
+  const [isLastStep, setIsLastStep] = useState(
+    questionsIndex === totalQuestions - 1
+  );
+  const [isCurrentStepDisabled, setCurrentStepDisabled] = useState(
+    !questions[questionsIndex].options.some((option) => option.isSelected)
+  );
+  const [isOneStepBeforeFinishing, setIsOneStepBeforeFinishing] = useState(
+    questionsIndex === totalQuestions - 2
   );
 
   useEffect(() => {
     setCurrentQuestion(questions[questionsIndex]);
+
+    onChange && onChange(questions);
+
+    setIsPreviousDisabled(questionsIndex === 0);
+    setIsLastStep(questionsIndex === totalQuestions - 1);
+    setCurrentStepDisabled(
+      !questions[questionsIndex].options.some((option) => option.isSelected)
+    );
+    setIsOneStepBeforeFinishing(questionsIndex === totalQuestions - 2);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [questionsIndex]);
+  }, [questionsIndex, currentQuestion]);
 
   const onToggleOptionSelected = (targetIndex: number) => {
     const updatedOptions = currentQuestion.options.map((option, i) => {
@@ -54,15 +81,22 @@ export const QuestionWizard: React.FC<IProps> = ({ questions }) => {
       />
     ));
 
-  const isPreviousDisabled = questionsIndex === 0;
-  const isNextDisabled = questionsIndex === totalQuestions - 1;
-
   const onNextClick = () => {
-    !isNextDisabled && setQuestionsIndex((prev) => prev + 1);
+    if (!isCurrentStepDisabled) {
+      !isLastStep && setQuestionsIndex((prev) => prev + 1);
+    }
   };
 
   const onPreviousClick = () => {
-    !isPreviousDisabled && setQuestionsIndex((prev) => prev - 1);
+    if (!isCurrentStepDisabled) {
+      !isPreviousDisabled && setQuestionsIndex((prev) => prev - 1);
+    }
+  };
+
+  const onFinishClick = () => {
+    if (!isCurrentStepDisabled) {
+      onFinish && onFinish(questions);
+    }
   };
 
   return (
@@ -80,7 +114,18 @@ export const QuestionWizard: React.FC<IProps> = ({ questions }) => {
           isDisabled={isPreviousDisabled}
         />
 
-        <NextButton onClick={onNextClick} isDisabled={isNextDisabled} />
+        {isOneStepBeforeFinishing && (
+          <NextButton
+            onClick={onNextClick}
+            isDisabled={isCurrentStepDisabled}
+          />
+        )}
+        {isLastStep && (
+          <FinishButton
+            onClick={onFinishClick}
+            isDisabled={isCurrentStepDisabled}
+          />
+        )}
       </Footer>
     </Container>
   );
@@ -88,7 +133,8 @@ export const QuestionWizard: React.FC<IProps> = ({ questions }) => {
 
 const Container = styled.div`
   font-family: "Open Sans", sans-serif;
-  min-width: 70%;
+  width: 100%;
+  max-width: 600px;
 `;
 
 const Header = styled.div`

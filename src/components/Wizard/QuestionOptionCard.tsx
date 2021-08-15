@@ -1,6 +1,6 @@
 import React from "react";
 import { CheckCircle } from "react-feather";
-import styled from "styled-components/macro";
+import styled from "styled-components";
 
 import { questionWizardTheme } from "../../constants/questionWizard.constants";
 
@@ -20,7 +20,9 @@ export const QuestionOptionCard: React.FC<IProps> = ({
   return (
     <IconBox className={!isSelected ? "inactive" : ""} onClick={onClick}>
       {isSelected && <CustomCheckCircle />}
-      <img src={imageUrl} alt="question option icon" />
+      <ImageContainer>
+        <img src={imageUrl} alt="question option icon" />
+      </ImageContainer>
       <IconBoxLabel>{label}</IconBoxLabel>
     </IconBox>
   );
@@ -29,11 +31,19 @@ export const QuestionOptionCard: React.FC<IProps> = ({
 const IconBox = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+  flex-direction: row-reverse;
+
   border: 1px solid ${questionWizardTheme.blue};
-  width: 166px;
-  height: 212px;
+  width: 100%;
+
+  /*DESKTOP ONLY CODE*/
+  @media screen and (min-width: 700px) {
+    width: 166px;
+    height: 212px;
+    justify-content: center;
+    align-items: center;
+  }
+
   border-radius: 5px;
   box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.05);
   margin: 0.5rem;
@@ -45,16 +55,44 @@ const IconBox = styled.div`
   }
 `;
 
+const ImageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 82px;
+    height: 82px;
+    margin: 0.25rem;
+  }
+`;
+
 const IconBoxLabel = styled.span`
   font-size: 0.8rem;
   color: ${questionWizardTheme.gray};
   font-weight: bold;
-  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: auto;
+
+  /*DESKTOP ONLY CODE*/
+  @media screen and (min-width: 700px) {
+    flex: 100%;
+  }
 `;
 
 const CustomCheckCircle = styled(CheckCircle)`
   position: absolute;
-  top: 0.7rem;
-  right: 0.7rem;
+
+  top: 0.4rem;
+  left: 0.4rem;
+
+  /*DESKTOP ONLY CODE*/
+  @media screen and (min-width: 700px) {
+    top: 0.7rem;
+    right: 0.7rem;
+  }
+
   color: ${questionWizardTheme.blue};
 `;

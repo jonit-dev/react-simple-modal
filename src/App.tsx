@@ -24,6 +24,11 @@ function App() {
           label: "Track my Portfolio",
           isSelected: false,
         },
+        {
+          imageUrl: "/images/portfolio.png",
+          label: "Track my Portfolio",
+          isSelected: false,
+        },
       ],
     },
     {
@@ -50,7 +55,11 @@ function App() {
       <h2>Modal</h2>
       <Button onClick={() => setIsModalOpen(true)}>Open modal</Button>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(!isModalOpen)}>
-        <QuestionWizard questions={questionWizardQuestions} />
+        <QuestionWizard
+          questions={questionWizardQuestions}
+          onChange={(questions) => console.log(questions)}
+          onFinish={() => setIsModalOpen(false)}
+        />
       </Modal>
     </>
   );
