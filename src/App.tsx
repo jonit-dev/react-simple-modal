@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Fade } from "./animations/Fade";
 import { Button } from "./components/Button";
 import { Modal } from "./components/Modal";
+import { SwipeableCard } from "./components/SwipeableCard";
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -22,6 +23,109 @@ function App() {
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(!isModalOpen)}>
         <p>hi</p>
       </Modal>
+
+      <h2>Card Animations</h2>
+
+      <SwipeableCard
+        id="card-1"
+        title="What's the Stock Market"
+        topImageSrc="/images/stock-market.png"
+      >
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit nemo
+          obcaecati alias, deleniti qui quod facilis rerum vitae nulla illo a
+          amet, nihil, quibusdam architecto adipisci eius officiis sapiente aut.
+        </p>
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit nemo
+          obcaecati alias, deleniti qui quod facilis rerum vitae nulla illo a
+          amet, nihil, quibusdam architecto adipisci eius officiis sapiente aut.
+        </p>
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit nemo
+          obcaecati alias,
+        </p>
+      </SwipeableCard>
+      <SwipeableCard id="card-2" title="How to Lose Money Fast">
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit nemo
+          obcaecati alias, deleniti qui quod facilis rerum vitae nulla illo a
+          amet, nihil, quibusdam architecto adipisci eius officiis sapiente aut.
+        </p>
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit nemo
+          obcaecati alias, deleniti qui quod facilis rerum vitae nulla illo a
+          amet, nihil, quibusdam architecto adipisci eius officiis sapiente aut.
+        </p>
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit nemo
+          obcaecati alias,
+        </p>
+      </SwipeableCard>
+      <SwipeableCard id="card-2" title="How to Lose Money Fast">
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit nemo
+          obcaecati alias, deleniti qui quod facilis rerum vitae nulla illo a
+          amet, nihil, quibusdam architecto adipisci eius officiis sapiente aut.
+        </p>
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit nemo
+          obcaecati alias, deleniti qui quod facilis rerum vitae nulla illo a
+          amet, nihil, quibusdam architecto adipisci eius officiis sapiente aut.
+        </p>
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit nemo
+          obcaecati alias,
+        </p>
+      </SwipeableCard>
+      <SwipeableCard id="card-2" title="How to Lose Money Fast">
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit nemo
+          obcaecati alias, deleniti qui quod facilis rerum vitae nulla illo a
+          amet, nihil, quibusdam architecto adipisci eius officiis sapiente aut.
+        </p>
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit nemo
+          obcaecati alias, deleniti qui quod facilis rerum vitae nulla illo a
+          amet, nihil, quibusdam architecto adipisci eius officiis sapiente aut.
+        </p>
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit nemo
+          obcaecati alias,
+        </p>
+      </SwipeableCard>
+      <SwipeableCard id="card-2" title="How to Lose Money Fast">
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit nemo
+          obcaecati alias, deleniti qui quod facilis rerum vitae nulla illo a
+          amet, nihil, quibusdam architecto adipisci eius officiis sapiente aut.
+        </p>
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit nemo
+          obcaecati alias, deleniti qui quod facilis rerum vitae nulla illo a
+          amet, nihil, quibusdam architecto adipisci eius officiis sapiente aut.
+        </p>
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit nemo
+          obcaecati alias,
+        </p>
+      </SwipeableCard>
+      <SwipeableCard id="card-2" title="How to Lose Money Fast">
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit nemo
+          obcaecati alias, deleniti qui quod facilis rerum vitae nulla illo a
+          amet, nihil, quibusdam architecto adipisci eius officiis sapiente aut.
+        </p>
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit nemo
+          obcaecati alias, deleniti qui quod facilis rerum vitae nulla illo a
+          amet, nihil, quibusdam architecto adipisci eius officiis sapiente aut.
+        </p>
+        <p>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit nemo
+          obcaecati alias,
+        </p>
+      </SwipeableCard>
     </Container>
   );
 }
